@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>SqlReader</id>
+        <version>1.0.0</version>
+        <authors>Wes Shaddix</authors>
+        <language>en-US</language>
+        <projectUrl>https://github.com/wshaddix/sqlreader/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A dynamic read-only micro orm used by web applications to easily query an ado.net database.</description>
+        <releaseNotes></releaseNotes>
+        <dependencies>
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="\bin\Release\SqlReader.dll" target="lib\net40\SqlReader.dll" />
+    </files>
+</package>

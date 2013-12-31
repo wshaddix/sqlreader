@@ -1,5 +1,6 @@
 sqlreader
 =========
+[![](http://i.imgur.com/g1WHerF.png)](http://www.ndepend.com)
 
 A dynamic read-only micro orm used by web applications to easily query an ado.net database.
 
@@ -21,15 +22,39 @@ Install from NuGet by searching for SqlReader
 See the unit tests for basic usage but a quick example is:
 ```csharp
 	[Test]
-    public void Can_Do_Basic_Get_With_Default_Connection_String()
+    public void Can_Do_Basic_Get()
     {
-        const string sql = "select top 1 * from dbo.ScriptTable";
-        var reader = new SqlReader();
-        var result = reader.Get(sql);
+        const string sql = "select top 1 * from person";
+        var reader = new DataReader(_testDbConnectionString);
+        var person = reader.Get<Person>(sql);
 
-        Assert.That(result.Id != null);
-        Assert.That(result.Script != null);
-        Assert.That(result.Release != null);
-        Assert.That(result.AppliedOnUtc != null);
+        Assert.That(!string.IsNullOrEmpty(person.FirstName), "First name is empty");
+        Assert.That(!string.IsNullOrEmpty(person.LastName), "Last name is empty");
+        Assert.That(!string.IsNullOrEmpty(person.City), "City is empty");
+        Assert.That(person.Age > 0, "Age is 0");
+    }
+
+	[Test]
+    public void Can_Do_Specific_Get()
+    {
+        const string sql = "select * from person where FirstName = 'First'";
+        var reader = new DataReader(_testDbConnectionString);
+        var person = reader.Get<Person>(sql);
+
+        Assert.That(person.FirstName.Equals("First"), "First name is not 'First'");
+        Assert.That(person.LastName.Equals("Last"), "Last name is not 'Last'");
+        Assert.That(person.City.Equals("City"), "City is not 'City'");
+        Assert.That(person.Age == 123, "Age is not '123'");
+    }
+	
+	[Test]
+    public void Can_Do_Basic_List()
+    {
+        const string sql = "select  * from person";
+        var reader = new DataReader(_testDbConnectionString);
+        var personList = reader.List<Person>(sql);
+
+        Assert.That(personList.Count == 52, "Didn't get back 52 records");
+        Assert.That(personList.Any(p => p.FirstName.Equals("First")), "Didn't contain specific person with first name 'First'");
     }
 ```
